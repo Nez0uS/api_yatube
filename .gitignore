@@ -21,4 +21,5 @@ staticfiles/
 *.swo
 
 # macOS
-.DS_Store
+.DS_Store.venv/
+.idea/
