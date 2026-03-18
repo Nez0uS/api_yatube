@@ -1,34 +1,29 @@
 from rest_framework import serializers
 from posts.models import Post, Group, Comment
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 
 class PostSerializer(serializers.ModelSerializer):
-    """Сериализатор для постов"""
-    author = serializers.SlugRelatedField(
-        read_only=True, slug_field='username'
-    )
+    author = serializers.StringRelatedField(read_only=True)
 
     class Meta:
-        fields = '__all__'
         model = Post
-        read_only_fields = ('pub_date',)
+        fields = ('id', 'text', 'author', 'image', 'group', 'pub_date')
+        read_only_fields = ('author',)
 
 
 class GroupSerializer(serializers.ModelSerializer):
-    """Сериализатор для групп (только чтение)"""
     class Meta:
-        fields = '__all__'
         model = Group
-        read_only_fields = '__all__'
+        fields = ('id', 'title', 'slug', 'description')
 
 
 class CommentSerializer(serializers.ModelSerializer):
-    """Сериализатор для комментариев"""
-    author = serializers.SlugRelatedField(
-        read_only=True, slug_field='username'
-    )
+    author = serializers.StringRelatedField(read_only=True)
 
     class Meta:
-        fields = '__all__'
         model = Comment
-        read_only_fields = ('created', 'post')
+        fields = ('id', 'author', 'post', 'text', 'created')
+        read_only_fields = ('author', 'post')
